@@ -6,7 +6,44 @@ public class Cinema {
 
     private final static Scanner scanner = new Scanner(System.in);
 
+    public static void kConsecutives() {
+
+        int n = scanner.nextInt();
+        int m = scanner.nextInt();
+
+        int[][] inp = new int[n][m];
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < m; j++) {
+                inp[i][j] = scanner.nextInt();
+            }
+        }
+
+        int k = scanner.nextInt();
+        boolean found = false;
+        int count = 0;
+        int row = 0;
+        for(int i = 0; i<n; i++){
+            for(int j = 0; j<m; j++){
+                if(!found){
+                    if(inp[i][j]==0)count++;
+                    else count = 0;
+                    if(k==count){
+                        found = true;
+                        row = i+1;
+                    }
+                }
+            }
+            count = 0;
+        }
+        System.out.println(row);
+
+
+    }
+
+
     public static void main(String... args) {
+
+//        kConsecutives();
 
         System.out.println("Cinema:");
 
@@ -36,5 +73,6 @@ public class Cinema {
             int frontRows = rows / 2;
             System.out.println("$" + ((frontRows * seats * 10) + ((rows - frontRows) * seats * 8)));
         }
+
     }
 }
