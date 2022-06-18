@@ -6,6 +6,7 @@ public class Cinema {
 
     private final static Scanner scanner = new Scanner(System.in);
 
+
     public static void kConsecutives() {
 
         int n = scanner.nextInt();
@@ -17,6 +18,7 @@ public class Cinema {
                 inp[i][j] = scanner.nextInt();
             }
         }
+
 
         int k = scanner.nextInt();
         boolean found = false;
