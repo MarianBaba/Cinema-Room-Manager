@@ -6,8 +6,75 @@ public class Cinema {
 
     private final static Scanner scanner = new Scanner(System.in);
 
+    private static int rows;
+    private static int seats;
 
-    public static void kConsecutives() {
+    private static char[][] cinema;
+
+    private static boolean isFinished = false;
+    private static void showMenu() {
+        System.out.println("1. Show the seats\n2. Buy a ticket\n0. Exit");
+        int decision = scanner.nextInt();
+        switch (decision) {
+            case 0: {
+                isFinished = true;
+                break;
+            }
+            case 1: {
+                showSeats();
+                break;
+            }
+            case 2: {
+                //buyTicket();
+                break;
+            }
+            default: {
+                System.out.println("Select an action");
+                break;
+            }
+        }
+    }
+    private static void showSeats() {
+
+        System.out.println("Cinema:");
+
+        System.out.print("  ");
+        for (int i = 0; i < seats; i++) {
+            System.out.print(i + 1 + " ");
+        }
+        System.out.println();
+
+        for (int i = 0; i < rows; i++) {
+            System.out.print(i + 1 + " ");
+            for (int j = 0; j < seats; j++) {
+                System.out.print(cinema[i][j] + " ");
+            }
+            System.out.println();
+        }
+
+        System.out.println();
+    }
+
+    private static void buyTicket() {
+        System.out.println("Enter a row number:");
+        int desiredRow = scanner.nextInt();
+        System.out.println("Enter a seat number in that row:");
+        int desiredColumn = scanner.nextInt();
+
+        cinema[desiredRow][desiredColumn] = 'B';
+
+        if (rows * seats <= 60) {
+            System.out.println("Ticket price: $10");
+        } else {
+            if (desiredRow <= rows/2) {
+                System.out.println("Ticket price: $10");
+            } else {
+                System.out.println("Ticket price: $8");
+            }
+        }
+    }
+
+    /*public static void kConsecutives() {
 
         int n = scanner.nextInt();
         int m = scanner.nextInt();
@@ -18,7 +85,6 @@ public class Cinema {
                 inp[i][j] = scanner.nextInt();
             }
         }
-
 
         int k = scanner.nextInt();
         boolean found = false;
@@ -38,74 +104,26 @@ public class Cinema {
             count = 0;
         }
         System.out.println(row);
-
-
     }
-
+    */
 
     public static void main(String... args) {
 
-//        kConsecutives();
-
         System.out.println("Enter the number of rows:");
-        int rows = scanner.nextInt();
+        rows = scanner.nextInt();
         System.out.println("Enter the number of seats in each row::");
-        int seats = scanner.nextInt();
+        seats = scanner.nextInt();
 
-        System.out.println("Cinema:");
-
-        System.out.print("  ");
-        for (int i = 0; i < seats; i++) {
-            System.out.print(i + 1 + " ");
-        }
-        System.out.println();
-
-        for (int i = 0; i < rows; i++) {
-            System.out.print(i + 1 + " ");
-            for (int j = 0; j < seats; j++) {
-                System.out.print("S ");
-            }
-            System.out.println();
-        }
-
-        System.out.println();
-
-        System.out.println("Enter a row number:");
-        int desiredRow = scanner.nextInt();
-        System.out.println("Enter a seat number in that row:");
-        int desiredColumn = scanner.nextInt();
-
-        if (rows * seats <= 60) {
-            System.out.println("Ticket price: $10");
-        } else {
-            if (desiredRow <= rows/2) {
-                System.out.println("Ticket price: $10");
-            } else {
-                System.out.println("Ticket price: $8");
+        cinema = new char[rows][seats];
+        for(int i = 0; i < rows; i++) {
+            for(int j = 0; j < seats; j++) {
+                cinema[i][j] = 'S';
             }
         }
 
-        System.out.println("Cinema:");
-
-        System.out.print("  ");
-        for (int i = 0; i < seats; i++) {
-            System.out.print(i + 1 + " ");
+        while (!isFinished) {
+            showMenu();
         }
-        System.out.println();
-
-        for (int i = 0; i < rows; i++) {
-            System.out.print(i + 1 + " ");
-            for (int j = 0; j < seats; j++) {
-                if (i == desiredRow - 1 && j == desiredColumn - 1) {
-                    System.out.print("B ");
-                } else {
-                    System.out.print("S ");
-                }
-            }
-            System.out.println();
-        }
-
-
 
         /*
         System.out.println("Total income:");
