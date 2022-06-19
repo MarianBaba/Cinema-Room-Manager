@@ -3,17 +3,18 @@ package cinema;
 import java.util.Scanner;
 
 public class Cinema {
-
     private final static Scanner scanner = new Scanner(System.in);
-
     private static int rows;
     private static int seats;
-
     private static char[][] cinema;
-
     private static boolean isFinished = false;
+
+    private static int purchasedTickets = 0;
+    private static float percentage = 0.0f;
+    private static int currentIncome = 0;
+
     private static void showMenu() {
-        System.out.println("1. Show the seats\n2. Buy a ticket\n0. Exit");
+        System.out.println("1. Show the seats\n2. Buy a ticket\n3. Statistics\n0. Exit");
         int decision = scanner.nextInt();
         switch (decision) {
             case 0: {
@@ -25,7 +26,11 @@ public class Cinema {
                 break;
             }
             case 2: {
-                //buyTicket();
+                buyTicket();
+                break;
+            }
+            case 3: {
+                showStats();
                 break;
             }
             default: {
@@ -34,16 +39,14 @@ public class Cinema {
             }
         }
     }
+
     private static void showSeats() {
-
         System.out.println("Cinema:");
-
         System.out.print("  ");
         for (int i = 0; i < seats; i++) {
             System.out.print(i + 1 + " ");
         }
         System.out.println();
-
         for (int i = 0; i < rows; i++) {
             System.out.print(i + 1 + " ");
             for (int j = 0; j < seats; j++) {
@@ -51,27 +54,77 @@ public class Cinema {
             }
             System.out.println();
         }
-
         System.out.println();
     }
 
     private static void buyTicket() {
-        System.out.println("Enter a row number:");
-        int desiredRow = scanner.nextInt();
-        System.out.println("Enter a seat number in that row:");
-        int desiredColumn = scanner.nextInt();
 
-        cinema[desiredRow][desiredColumn] = 'B';
+        boolean isValid = false;
+        int desiredRow = Integer.MIN_VALUE;
+        int desiredColumn;
+
+        while(!isValid) {
+            System.out.println("Enter a row number:");
+            desiredRow = scanner.nextInt() - 1;
+            System.out.println("Enter a seat number in that row:");
+            desiredColumn = scanner.nextInt() - 1;
+
+            if ((desiredRow >= 0 && desiredRow <= rows - 1) && (desiredColumn >= 0 && desiredColumn <= seats - 1)) {
+                if (cinema[desiredRow][desiredColumn] == 'B') {
+                    System.out.println("That ticket has already been purchased!");
+                } else {
+                    isValid = true;
+                    cinema[desiredRow][desiredColumn] = 'B';
+                    purchasedTickets++;
+                }
+            } else {
+                System.out.println("Wrong input!");
+            }
+        }
+
+        System.out.println(desiredRow);
 
         if (rows * seats <= 60) {
             System.out.println("Ticket price: $10");
+            currentIncome += 10;
         } else {
-            if (desiredRow <= rows/2) {
+            if (desiredRow + 1 <= rows/2) {
                 System.out.println("Ticket price: $10");
+                currentIncome += 10;
             } else {
                 System.out.println("Ticket price: $8");
+                currentIncome += 8;
             }
         }
+    }
+
+    private static void showStats() {
+        System.out.println("Number of purchased tickets: " + purchasedTickets);
+
+        percentage = ((float) purchasedTickets / (float) (rows * seats)) * 100.0f;
+        System.out.printf("Percentage: %.2f", percentage);
+        System.out.print("%");
+        System.out.println();
+
+        System.out.println("Current income: $" + currentIncome);
+
+        int totalIncome = totalIncome(rows, seats);
+        System.out.println("Total income: $" + totalIncome);
+    }
+
+    private static int totalIncome(int rows, int seats) {
+
+        int res = 0;
+
+        if (rows * seats <= 60) {
+            res = rows * seats * 10;
+        } else {
+            int front = rows / 2;
+            int back = rows - front;
+            res = (front * seats * 10) + (back * seats * 8);
+        }
+
+        return res;
     }
 
     /*public static void kConsecutives() {
@@ -124,15 +177,5 @@ public class Cinema {
         while (!isFinished) {
             showMenu();
         }
-
-        /*
-        System.out.println("Total income:");
-        if(rows * seats <= 60) {
-            System.out.println("$" + (rows * seats * 10));
-        } else {
-            int frontRows = rows / 2;
-            System.out.println("$" + ((frontRows * seats * 10) + ((rows - frontRows) * seats * 8)));
-        }
-        */
     }
 }
